@@ -9,6 +9,7 @@
 int main(int argc, char* argv[]) {
 
 	/*inicjalizacja gniazda*/
+	
 	WSADATA wsaData;
 
 	int iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
