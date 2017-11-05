@@ -46,5 +46,23 @@ int main(int argc, char* argv[]) {
 	}
 
 	/*---------------------------*/
+
+	/*³¹czenie z portem*/
+
+	iResult = connect(ConnectSocket, ptr->ai_addr, (int)ptr->ai_addrlen);
+	if (iResult == SOCKET_ERROR) {
+		closesocket(ConnectSocket);
+		ConnectSocket = INVALID_SOCKET;
+	}
+
+	freeaddrinfo(result);
+
+	if (ConnectSocket == INVALID_SOCKET) {
+		std::cerr << "Unable to connect to server!" << std::endl;
+		WSACleanup();
+		return 1;
+	}
+
+	/*---------------------------*/
 	return 0;
 }
