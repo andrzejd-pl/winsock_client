@@ -101,5 +101,20 @@ int main(int argc, char* argv[]) {
 	} while (iResult > 0);
 
 	/*---------------------------*/
+
+	/*koñczenie po³¹czenia*/
+
+	iResult = shutdown(ConnectSocket, SD_SEND);
+	if (iResult == SOCKET_ERROR) {
+		std::cerr << "shutdown failed: " << WSAGetLastError() << std::endl;
+		closesocket(ConnectSocket);
+		WSACleanup();
+		return 1;
+	}
+
+	closesocket(ConnectSocket);
+	WSACleanup();
+
+	/*---------------------------*/
 	return 0;
 }
