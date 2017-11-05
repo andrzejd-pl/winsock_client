@@ -64,5 +64,42 @@ int main(int argc, char* argv[]) {
 	}
 
 	/*---------------------------*/
+
+	/*wysy³anie i odbieranie danych*/
+
+	int recvbuflen = DEFAULT_BUFLEN;
+
+	char *sendbuf = "this is a test";
+	char recvbuf[DEFAULT_BUFLEN];
+
+	iResult = send(ConnectSocket, sendbuf, (int)strlen(sendbuf), 0);
+	if (iResult == SOCKET_ERROR) {
+		std::cerr << "send failed: " << WSAGetLastError() << std::endl;
+		closesocket(ConnectSocket);
+		WSACleanup();
+		return 1;
+	}
+
+	std::cout << "Bytes Sent: " << iResult << std::endl;
+
+	iResult = shutdown(ConnectSocket, SD_SEND);
+	if (iResult == SOCKET_ERROR) {
+		std::cerr << "shutdown failed: " << WSAGetLastError() << std::endl;
+		closesocket(ConnectSocket);
+		WSACleanup();
+		return 1;
+	}
+
+	do {
+		iResult = recv(ConnectSocket, recvbuf, recvbuflen, 0);
+		if (iResult > 0)
+			std::cout << "Bytes received: " << iResult << std::endl;
+		else if (iResult == 0)
+			std::cout << "Connection closed" << std::endl;
+		else
+			std::cerr << "recv failed: " << WSAGetLastError() << std::endl;
+	} while (iResult > 0);
+
+	/*---------------------------*/
 	return 0;
 }
